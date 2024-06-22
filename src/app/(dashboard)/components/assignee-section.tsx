@@ -15,7 +15,7 @@ export default async function AssigneeSection({
   const issuesByAssignee = await getCurrentSprintIssues(currentSprint.id);
   return (
     <div
-      className={`mb-32 grid mt-4 text-center gap-2 lg:mb-0 lg:w-full lg:max-w-5xl lg:grid-cols-${issuesByAssignee.length} lg:text-left`}
+      className={`mb-32 grid mt-4 text-center gap-2 lg:mb-0 lg:w-full lg:max-w-5xl lg:grid-cols-3 lg:text-left`}
     >
       {issuesByAssignee.map((assignee) => (
         <div
