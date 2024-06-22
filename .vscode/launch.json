@@ -1,0 +1,32 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Next.js: Dev",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "--", "--inspect-brk"],
+      "autoAttachChildProcesses": true,
+      "restart": true,
+      "sourceMaps": true,
+      "stopOnEntry": false,
+      "console": "integratedTerminal"
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Launch Chrome against localhost",
+      "url": "http://localhost:5200",
+      "webRoot": "${workspaceFolder}",
+      "sourceMaps": true,
+      "skipFiles": ["<node_internals>/**", "webpack://_N_E/*"]
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Next.js Full Stack",
+      "configurations": ["Next.js: Dev", "Launch Chrome against localhost"]
+    }
+  ]
+}
