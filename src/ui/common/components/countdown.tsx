@@ -42,7 +42,7 @@ export default function CountdownSection({
             />
           </div>
 
-          <span className="font-semibold drop-shadow-custom-light dark:drop-shadow-custom-dark ">
+          <span className="font-semibold  dark:drop-shadow-custom-dark ">
             {daysSinceEnd !== null
               ? `Finalizado hace ${daysSinceEnd} días`
               : "Finalizado"}

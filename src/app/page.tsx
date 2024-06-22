@@ -31,7 +31,7 @@ export default async function Home() {
               height={24}
               priority
             /> */}
-            <span>Javiervinus</span>
+            <span>javiervinus</span>
           </a>
           <ModeToggle />
         </div>
