@@ -3,6 +3,7 @@
 import { SprintState } from "@/core/enums/sprint-state.enum";
 import { SprintResume } from "@/core/interfaces/sprint-resume.interface";
 import { DotLottiePlayer, PlayMode } from "@dotlottie/react-player";
+import { differenceInBusinessDays, endOfDay, format, parseISO } from "date-fns";
 import Countdown from "react-countdown";
 
 export default function CountdownSection({
@@ -13,6 +14,9 @@ export default function CountdownSection({
   const activeSprint = lastSprints?.find(
     (sprint) => sprint.state === SprintState.ACTIVE
   );
+  const endDate = parseISO(activeSprint?.endDate!);
+  activeSprint!.endDate = endOfDay(endDate).toISOString();
+
   // Remover palabra "Tablero" del nombre del sprint
   const activeSprintName = activeSprint?.name.replace("Tablero Sprint", "");
 
@@ -57,20 +61,35 @@ export default function CountdownSection({
           if (completed) {
             return <FinishedAnimation />;
           }
+          const padNumber = (num: number) => String(num).padStart(2, "0");
+
           if (days === 0)
             return (
               <span className="text-2xl">
-                {hours}:{minutes}
+                {padNumber(hours)}:{padNumber(minutes)}
               </span>
             );
           if (days === 0 && hours === 0)
             return (
               <span className="text-2xl">
-                {minutes}:{seconds}
+                {padNumber(minutes)}:{padNumber(seconds)}{" "}
               </span>
             );
 
-          return <span className="text-2xl">{days} días</span>;
+          return (
+            <div className="flex flex-col">
+              <span className="text-2xl">
+                {differenceInBusinessDays(
+                  new Date(activeSprint?.endDate!),
+                  Date.now()
+                )}{" "}
+                días
+              </span>
+              <span className="text-md">
+                {format(new Date(activeSprint?.endDate!), "PP")}
+              </span>
+            </div>
+          );
         }}
       ></Countdown>
     </div>
