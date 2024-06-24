@@ -23,32 +23,56 @@ export default function CountdownSection({
       )
     : null;
 
+  const FinishedAnimation = () => (
+    <div className="flex flex-col items-center justify-center">
+      {/* <span className="text-xl animate-bounce">🎉</span> */}
+
+      <div className="w-full h-14 text-center flex justify-center items-center">
+        <DotLottiePlayer
+          src={"done.lottie"}
+          autoplay
+          playMode={PlayMode.Normal}
+          loop
+          color="#000000"
+          style={{ height: 100, width: 100, padding: 0 }}
+        />
+      </div>
+
+      <span className="font-semibold  dark:drop-shadow-custom-dark ">
+        {daysSinceEnd !== null
+          ? `Finalizado hace ${daysSinceEnd} días`
+          : "Finalizado"}
+      </span>
+    </div>
+  );
+
   return (
     <div className="flex w-full flex-col gap-1 justify-center items-center text-center">
       <h1 className="font-medium text-3xl">Sprint actual</h1>
       <span>{activeSprintName}</span>
-      <Countdown className="text-3xl" date={activeSprint?.endDate}>
-        <div className="flex flex-col items-center justify-center">
-          {/* <span className="text-xl animate-bounce">🎉</span> */}
+      <Countdown
+        date={activeSprint?.endDate}
+        daysInHours={true}
+        renderer={({ days, hours, minutes, seconds, completed }) => {
+          if (completed) {
+            return <FinishedAnimation />;
+          }
+          if (days === 0)
+            return (
+              <span className="text-2xl">
+                {hours}:{minutes}
+              </span>
+            );
+          if (days === 0 && hours === 0)
+            return (
+              <span className="text-2xl">
+                {minutes}:{seconds}
+              </span>
+            );
 
-          <div className="w-full h-14 text-center flex justify-center items-center">
-            <DotLottiePlayer
-              src={"done.lottie"}
-              autoplay
-              playMode={PlayMode.Normal}
-              loop
-              color="#000000"
-              style={{ height: 100, width: 100, padding: 0 }}
-            />
-          </div>
-
-          <span className="font-semibold  dark:drop-shadow-custom-dark ">
-            {daysSinceEnd !== null
-              ? `Finalizado hace ${daysSinceEnd} días`
-              : "Finalizado"}
-          </span>
-        </div>
-      </Countdown>
+          return <span className="text-2xl">{days} días</span>;
+        }}
+      ></Countdown>
     </div>
   );
 }
