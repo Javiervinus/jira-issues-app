@@ -33,11 +33,11 @@ export default async function AssigneeSection({
               </Avatar>
             </span>
             {assignee.assignee.displayName === "Claudio Godoi" && (
-              <p className="block">
+              <div className="block">
                 <Badge variant="outline">
                   Sprint {activeSprintNumber - 12}
                 </Badge>
-              </p>
+              </div>
             )}
           </h2>
 
