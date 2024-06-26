@@ -52,8 +52,8 @@ export default function CountdownSection({
 
   return (
     <div className="flex w-full flex-col gap-1 justify-center items-center text-center">
-      <h1 className="font-medium text-3xl">Sprint actual</h1>
-      <span>{activeSprintName}</span>
+      <h1 className="font-medium text-3xl">Sprint {activeSprintName}</h1>
+      {/* <span>{activeSprintName}</span> */}
       <Countdown
         date={activeSprint?.endDate}
         daysInHours={true}

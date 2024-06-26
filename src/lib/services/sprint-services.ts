@@ -1,3 +1,4 @@
+import { IssueState } from "@/core/enums/issue-state.enum";
 import { GetIssuesResponse } from "@/core/interfaces/get-issues-response";
 import { GetSprintsResponse } from "@/core/interfaces/get-sprints-response";
 import { IssueByAssignee } from "@/core/interfaces/issues-by-assignee.interface";
@@ -68,6 +69,8 @@ function getIssuesByAssignee(issues: Issue[]) {
           doneIssues: 0,
           totalIssues: 0,
           inProgressIssues: 0,
+          toDoIssues: 0,
+          performance: 0,
         };
         // se añaden las tareas que no son subtasks
         if (
@@ -85,12 +88,14 @@ function getIssuesByAssignee(issues: Issue[]) {
         if (addIssue) {
           issueByAssignee.totalIssues++;
           if (
-            issue.fields.status.name === "En Dev" ||
-            issue.fields.status.name === "Finalizada"
+            issue.fields.status.name === IssueState.IN_DEV ||
+            issue.fields.status.name === IssueState.DONE
           ) {
             issueByAssignee.doneIssues++;
-          } else if (issue.fields.status.name === "En curso") {
+          } else if (issue.fields.status.name === IssueState.IN_PROGRESS) {
             issueByAssignee.inProgressIssues++;
+          } else if (issue.fields.status.name === IssueState.TO_DO) {
+            issueByAssignee.toDoIssues++;
           }
           issueByAssignee.issues.push(issue);
           issuesByAssignee.push(issueByAssignee);
@@ -100,7 +105,7 @@ function getIssuesByAssignee(issues: Issue[]) {
           issue.fields.subtasks.length === 0 &&
           issue.fields.issuetype.subtask === false
         ) {
-          addIssue;
+          addIssue = true;
         } else {
           if (
             issue.fields.subtasks.length === 0 &&
@@ -113,18 +118,26 @@ function getIssuesByAssignee(issues: Issue[]) {
           const issueByAssignee = issuesByAssignee[assigneeIndex];
           issueByAssignee.totalIssues++;
           if (
-            issue.fields.status.name === "En Dev" ||
-            issue.fields.status.name === "Finalizada"
+            issue.fields.status.name === IssueState.IN_DEV ||
+            issue.fields.status.name === IssueState.DONE
           ) {
             issueByAssignee.doneIssues++;
-          } else if (issue.fields.status.name === "En curso") {
+          } else if (issue.fields.status.name === IssueState.IN_PROGRESS) {
             issueByAssignee.inProgressIssues++;
+          } else if (issue.fields.status.name === IssueState.TO_DO) {
+            issueByAssignee.toDoIssues++;
           }
 
           issueByAssignee.issues.push(issue);
         }
       }
     }
+  });
+  issuesByAssignee.forEach((assignee) => {
+    assignee.performance =
+      (assignee.doneIssues / assignee.totalIssues) * 0.7 +
+      (assignee.inProgressIssues / assignee.totalIssues) * 0.2 +
+      (1 / (assignee.toDoIssues + 1)) * 0.1;
   });
 
   return issuesByAssignee;
