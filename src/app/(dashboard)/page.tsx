@@ -1,8 +1,8 @@
 import { getLastSprints } from "@/lib/services/sprint-services";
 
-import { ModeToggle } from "@/ui/common/components/mode-toggle";
-import AssigneeSection from "./components/assignee-section";
-import CountdownSection from "./components/countdown-section";
+import { ModeToggle } from "@/ui/common/components/ModeToggle";
+import AssigneeSection from "./components/AssigneeSection";
+import CountdownSection from "./components/CountdownSection";
 
 const enterpriseName = "Betterplan";
 
