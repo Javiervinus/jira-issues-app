@@ -1,4 +1,4 @@
-import { ThemeProvider } from "@/ui/common/providers/theme-provider";
+import { ThemeProvider } from "@/ui/common/providers/ThemeProvider";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
