@@ -15,4 +15,6 @@ export interface IssueByAssignee {
   doneIssues: number;
   totalIssues: number;
   inProgressIssues: number;
+  toDoIssues: number;
+  performance: number;
 }
