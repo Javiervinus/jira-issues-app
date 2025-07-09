@@ -23,6 +23,24 @@ async function getPageMetadata() {
     locale: es,
   });
 
+  // Determinar la URL base de manera inteligente
+  const getBaseUrl = () => {
+    // 1. Si está configurada explícitamente, usarla
+    if (process.env.NEXT_PUBLIC_BASE_URL) {
+      return process.env.NEXT_PUBLIC_BASE_URL;
+    }
+    
+    // 2. En producción de Vercel, usar VERCEL_URL
+    if (process.env.VERCEL_URL) {
+      return `https://${process.env.VERCEL_URL}`;
+    }
+    
+    // 3. Fallback para desarrollo local
+    return "http://localhost:5200";
+  };
+
+  const baseUrl = getBaseUrl();
+
   if (!activeSprint) {
     return {
       title: "JIRA Sprint Dashboard - No hay sprint activo",
@@ -30,7 +48,7 @@ async function getPageMetadata() {
       imageUrl: `/api/og?sprint=Sin%20Sprint&dates=&updated=${encodeURIComponent(
         lastUpdatedShort
       )}`,
-      url: process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:5200",
+      url: baseUrl,
     };
   }
 
@@ -66,7 +84,7 @@ async function getPageMetadata() {
     )}&dates=${encodeURIComponent(sprintDates)}&updated=${encodeURIComponent(
       lastUpdatedShort
     )}&status=${encodeURIComponent(sprintStatus)}`,
-    url: process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:5200",
+    url: baseUrl,
   };
 }
 

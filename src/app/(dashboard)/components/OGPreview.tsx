@@ -34,8 +34,8 @@ export default function OGPreview({
   console.log("OGPreview - NODE_ENV:", process.env.NODE_ENV);
   console.log("OGPreview - Props:", { title, description, imageUrl, url });
 
-  // Solo mostrar en desarrollo (simplificado para debug)
-  const isDevelopment = true; // Temporal para testing
+  // Solo mostrar en desarrollo
+  const isDevelopment = process.env.NODE_ENV === 'development';
 
   if (!isDevelopment) {
     console.warn(
