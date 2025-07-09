@@ -1,4 +1,5 @@
 "use client";
+// import lottieAnimation from "@/assets/lotties/done.lottie";
 import { SprintState } from "@/core/enums/sprint-state.enum";
 import { SprintResume } from "@/core/interfaces/sprint-resume.interface";
 import { DotLottiePlayer, PlayMode } from "@dotlottie/react-player";
@@ -113,6 +114,27 @@ export default function CountdownSection({
         {/* Countdown */}
         <div className="text-center">
           <div className="text-gray-600 dark:text-gray-300 text-sm font-medium mb-3">
+            Tiempo restante
+          </div>
+            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3 shadow-inner">
+              <div
+                className="bg-gradient-to-r from-blue-500 to-purple-500 h-3 rounded-full transition-all duration-500 shadow-sm"
+                style={{ width: `${sprintProgress}%` }}
+                suppressHydrationWarning
+              />
+            </div>
+            <div
+              className="text-sm text-gray-500 dark:text-gray-400 mt-2 font-medium"
+              suppressHydrationWarning
+            >
+              Día {daysElapsed} de {totalDays} días laborales
+            </div>
+          </div>
+        )}
+
+        {/* Countdown */}
+        <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg border border-gray-200 dark:border-gray-700">
+          <div className="text-gray-600 dark:text-gray-300 text-sm font-medium mb-4">
             Tiempo restante
           </div>
           <Countdown
