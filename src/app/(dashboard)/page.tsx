@@ -5,6 +5,7 @@ import { ModeToggle } from "@/ui/common/components/ModeToggle";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import { Metadata } from "next";
+import { headers } from "next/headers";
 import AssigneeSection from "./components/AssigneeSection";
 import NextSprintInfo from "./components/NextSprintInfo";
 import OGPreview from "./components/OGPreview";
@@ -12,16 +13,97 @@ import SprintHero from "./components/SprintHero";
 
 const enterpriseName = "Betterplan";
 
+// Función para obtener la zona horaria del usuario basada en headers
+function getUserTimezone() {
+  const headersList = headers();
+
+  // Intentar obtener zona horaria de diferentes headers
+  const cfTimezone = headersList.get("cf-timezone"); // Cloudflare
+  const xTimezone = headersList.get("x-timezone"); // Custom header
+
+  // Si no hay headers específicos, intentar inferir de Accept-Language o usar fallback
+  if (cfTimezone) {
+    return cfTimezone;
+  }
+
+  if (xTimezone) {
+    return xTimezone;
+  }
+
+  // Mapeo de países comunes a zonas horarias (fallback básico)
+  const acceptLanguage = headersList.get("accept-language") || "";
+
+  if (acceptLanguage.includes("es-CL") || acceptLanguage.includes("cl")) {
+    return "America/Santiago"; // Chile
+  }
+
+  if (acceptLanguage.includes("es-PE") || acceptLanguage.includes("pe")) {
+    return "America/Lima"; // Perú
+  }
+
+  if (acceptLanguage.includes("es-CO") || acceptLanguage.includes("co")) {
+    return "America/Bogota"; // Colombia
+  }
+
+  if (acceptLanguage.includes("es-EC") || acceptLanguage.includes("ec")) {
+    return "America/Guayaquil"; // Ecuador
+  }
+
+  // Fallback por defecto (Ecuador/GMT-5)
+  return "America/Guayaquil";
+}
+
+// Función para formatear fecha con zona horaria específica
+function formatWithTimezone(date: Date, formatStr: string, timezone: string) {
+  try {
+    // Usar Intl.DateTimeFormat para obtener la fecha en la zona horaria correcta
+    const formatter = new Intl.DateTimeFormat("es-ES", {
+      timeZone: timezone,
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    });
+
+    const parts = formatter.formatToParts(date);
+    const year = parts.find((part) => part.type === "year")?.value;
+    const month = parts.find((part) => part.type === "month")?.value;
+    const day = parts.find((part) => part.type === "day")?.value;
+    const hour = parts.find((part) => part.type === "hour")?.value;
+    const minute = parts.find((part) => part.type === "minute")?.value;
+
+    // Crear nueva fecha con los valores de la zona horaria
+    const localDate = new Date(`${year}-${month}-${day}T${hour}:${minute}:00`);
+
+    // Usar date-fns para formatear con el formato deseado
+    return format(localDate, formatStr, { locale: es });
+  } catch (error) {
+    // Fallback si hay error con la zona horaria
+    console.warn("Error formatting with timezone:", error);
+    return format(date, formatStr, { locale: es });
+  }
+}
+
 // Función helper para generar metadatos (reutilizable)
 async function getPageMetadata() {
   const lastSprints = (await getLastSprints())?.values;
   const activeSprint = lastSprints?.find(
     (sprint) => sprint.state === SprintState.ACTIVE
   );
-  const lastUpdated = format(new Date(), "PPP 'a las' p", { locale: es });
-  const lastUpdatedShort = format(new Date(), "dd/MM/yyyy HH:mm", {
-    locale: es,
-  });
+
+  // Obtener zona horaria del usuario
+  const userTimezone = getUserTimezone();
+  const now = new Date();
+
+  // Formatear fechas usando la zona horaria del usuario
+  const lastUpdated = formatWithTimezone(now, "PPP 'a las' p", userTimezone);
+  const lastUpdatedShort = formatWithTimezone(
+    now,
+    "dd/MM/yyyy HH:mm",
+    userTimezone
+  );
 
   // Determinar la URL base de manera inteligente
   const getBaseUrl = () => {
@@ -44,7 +126,7 @@ async function getPageMetadata() {
   if (!activeSprint) {
     return {
       title: "JIRA Sprint Dashboard - No hay sprint activo",
-      description: `Dashboard de sprints de ${enterpriseName}. Monitoreo en tiempo real del equipo de desarrollo. Última actualización: ${lastUpdated}`,
+      description: `Dashboard de sprints de ${enterpriseName}. Monitoreo en tiempo real del equipo de desarrollo. Última actualización: ${lastUpdated} (${userTimezone})`,
       imageUrl: `/api/og?sprint=Sin%20Sprint&dates=&updated=${encodeURIComponent(
         lastUpdatedShort
       )}`,
@@ -62,12 +144,12 @@ async function getPageMetadata() {
         })}`
       : "";
 
-  // Calculate days remaining
+  // Calculate days remaining usando la zona horaria del usuario
   const daysRemaining = activeSprint.endDate
     ? Math.max(
         0,
         Math.floor(
-          (new Date(activeSprint.endDate).getTime() - new Date().getTime()) /
+          (new Date(activeSprint.endDate).getTime() - now.getTime()) /
             (1000 * 3600 * 24)
         )
       )
@@ -78,7 +160,7 @@ async function getPageMetadata() {
 
   return {
     title: `🚀 Sprint ${sprintName} - ${enterpriseName}`,
-    description: `Sprint activo del ${sprintDates} • ${sprintStatus} • Dashboard actualizado el ${lastUpdatedShort}`,
+    description: `Sprint activo del ${sprintDates} • ${sprintStatus} • Actualizado el ${lastUpdatedShort} (${userTimezone})`,
     imageUrl: `/api/og?sprint=${encodeURIComponent(
       sprintName
     )}&dates=${encodeURIComponent(sprintDates)}&updated=${encodeURIComponent(
