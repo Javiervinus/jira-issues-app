@@ -50,23 +50,23 @@ export async function GET(request: NextRequest) {
               justifyContent: "center",
               alignItems: "center",
               width: "100%",
-              padding: "60px",
+              padding: "40px",
               textAlign: "center",
               zIndex: 1,
             }}
           >
-            {/* Header section */}
+            {/* Header section - Sprint más prominente */}
             <div
               style={{
                 display: "flex",
                 alignItems: "center",
-                marginBottom: "40px",
+                marginBottom: "50px",
               }}
             >
               <div
                 style={{
-                  fontSize: "80px",
-                  marginRight: "24px",
+                  fontSize: "120px",
+                  marginRight: "40px",
                   display: "flex",
                 }}
               >
@@ -81,11 +81,11 @@ export async function GET(request: NextRequest) {
               >
                 <div
                   style={{
-                    fontSize: "32px",
+                    fontSize: "40px",
                     color: "#a0a0a0",
                     fontWeight: 400,
                     lineHeight: 1,
-                    marginBottom: "8px",
+                    marginBottom: "12px",
                     display: "flex",
                   }}
                 >
@@ -93,7 +93,7 @@ export async function GET(request: NextRequest) {
                 </div>
                 <div
                   style={{
-                    fontSize: "64px",
+                    fontSize: "84px",
                     fontWeight: 800,
                     lineHeight: 1,
                     background:
@@ -108,33 +108,33 @@ export async function GET(request: NextRequest) {
               </div>
             </div>
 
-            {/* Content grid */}
+            {/* Content grid - Enfoque en días restantes */}
             <div
               style={{
                 display: "flex",
-                flexDirection: "column",
-                gap: "24px",
+                gap: "30px",
                 width: "100%",
-                maxWidth: "800px",
+                maxWidth: "1000px",
               }}
             >
-              {/* Dates section */}
+              {/* Fechas del sprint */}
               <div
                 style={{
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "center",
-                  padding: "20px 32px",
+                  padding: "30px 40px",
                   background: "rgba(255, 255, 255, 0.05)",
-                  borderRadius: "12px",
+                  borderRadius: "20px",
                   border: "1px solid rgba(255, 255, 255, 0.1)",
+                  flex: 1,
                 }}
               >
                 <div
                   style={{
-                    fontSize: "18px",
+                    fontSize: "26px",
                     color: "#9ca3af",
-                    marginBottom: "8px",
+                    marginBottom: "16px",
                     display: "flex",
                   }}
                 >
@@ -142,92 +142,51 @@ export async function GET(request: NextRequest) {
                 </div>
                 <div
                   style={{
-                    fontSize: "28px",
+                    fontSize: "36px",
                     fontWeight: 600,
                     color: "#ffffff",
                     display: "flex",
+                    textAlign: "center",
                   }}
                 >
                   {dates || "Fechas del sprint"}
                 </div>
               </div>
 
-              {/* Status and updated in a row */}
+              {/* Días restantes - MÁS PROMINENTE */}
               <div
                 style={{
                   display: "flex",
-                  gap: "24px",
-                  width: "100%",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  padding: "30px 40px",
+                  background: "rgba(34, 197, 94, 0.15)",
+                  borderRadius: "20px",
+                  border: "2px solid rgba(34, 197, 94, 0.4)",
+                  flex: 1,
+                  boxShadow: "0 0 30px rgba(34, 197, 94, 0.2)",
                 }}
               >
-                {/* Status */}
                 <div
                   style={{
+                    fontSize: "26px",
+                    color: "#86efac",
+                    marginBottom: "16px",
                     display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    padding: "20px 32px",
-                    background: "rgba(34, 197, 94, 0.1)",
-                    borderRadius: "12px",
-                    border: "1px solid rgba(34, 197, 94, 0.3)",
-                    flex: 1,
                   }}
                 >
-                  <div
-                    style={{
-                      fontSize: "16px",
-                      color: "#86efac",
-                      marginBottom: "8px",
-                      display: "flex",
-                    }}
-                  >
-                    Estado
-                  </div>
-                  <div
-                    style={{
-                      fontSize: "24px",
-                      fontWeight: 600,
-                      color: "#22c55e",
-                      display: "flex",
-                    }}
-                  >
-                    {status || "Estado del sprint"}
-                  </div>
+                  Estado del Sprint
                 </div>
-
-                {/* Updated */}
                 <div
                   style={{
+                    fontSize: "42px",
+                    fontWeight: 700,
+                    color: "#22c55e",
                     display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    padding: "20px 32px",
-                    background: "rgba(59, 130, 246, 0.1)",
-                    borderRadius: "12px",
-                    border: "1px solid rgba(59, 130, 246, 0.3)",
-                    flex: 1,
+                    textAlign: "center",
                   }}
                 >
-                  <div
-                    style={{
-                      fontSize: "16px",
-                      color: "#93c5fd",
-                      marginBottom: "8px",
-                      display: "flex",
-                    }}
-                  >
-                    Actualizado
-                  </div>
-                  <div
-                    style={{
-                      fontSize: "20px",
-                      fontWeight: 600,
-                      color: "#3b82f6",
-                      display: "flex",
-                    }}
-                  >
-                    {updated}
-                  </div>
+                  {status || "Estado del sprint"}
                 </div>
               </div>
             </div>

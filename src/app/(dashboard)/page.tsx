@@ -29,12 +29,12 @@ async function getPageMetadata() {
     if (process.env.NEXT_PUBLIC_BASE_URL) {
       return process.env.NEXT_PUBLIC_BASE_URL;
     }
-    
+
     // 2. En producción de Vercel, usar VERCEL_URL
     if (process.env.VERCEL_URL) {
       return `https://${process.env.VERCEL_URL}`;
     }
-    
+
     // 3. Fallback para desarrollo local
     return "http://localhost:5200";
   };
@@ -66,7 +66,7 @@ async function getPageMetadata() {
   const daysRemaining = activeSprint.endDate
     ? Math.max(
         0,
-        Math.ceil(
+        Math.floor(
           (new Date(activeSprint.endDate).getTime() - new Date().getTime()) /
             (1000 * 3600 * 24)
         )
