@@ -22,7 +22,8 @@ export async function GET(request: NextRequest) {
             height: "100%",
             width: "100%",
             display: "flex",
-            background: "linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1f1f1f 100%)",
+            background:
+              "linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1f1f1f 100%)",
             color: "white",
             position: "relative",
           }}
@@ -35,11 +36,12 @@ export async function GET(request: NextRequest) {
               left: 0,
               right: 0,
               bottom: 0,
-              background: "radial-gradient(circle at 25% 25%, rgba(255,255,255,0.02) 0%, transparent 50%)",
+              background:
+                "radial-gradient(circle at 25% 25%, rgba(255,255,255,0.02) 0%, transparent 50%)",
               display: "flex",
             }}
           />
-          
+
           {/* Main content */}
           <div
             style={{
@@ -61,7 +63,13 @@ export async function GET(request: NextRequest) {
                 marginBottom: "40px",
               }}
             >
-              <div style={{ fontSize: "80px", marginRight: "24px", display: "flex" }}>
+              <div
+                style={{
+                  fontSize: "80px",
+                  marginRight: "24px",
+                  display: "flex",
+                }}
+              >
                 🚀
               </div>
               <div
@@ -88,7 +96,8 @@ export async function GET(request: NextRequest) {
                     fontSize: "64px",
                     fontWeight: 800,
                     lineHeight: 1,
-                    background: "linear-gradient(45deg, #ffffff 0%, #e0e0e0 100%)",
+                    background:
+                      "linear-gradient(45deg, #ffffff 0%, #e0e0e0 100%)",
                     backgroundClip: "text",
                     color: "transparent",
                     display: "flex",
